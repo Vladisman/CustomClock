@@ -1,6 +1,7 @@
 package ru.vladisman.customclock
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.content.withStyledAttributes
 import java.util.Calendar
 import kotlin.math.cos
@@ -27,7 +29,7 @@ class ClockView @JvmOverloads constructor(
 
   private companion object {
     const val DEFAULT_SIZE = 240
-    const val REFRESH_DELAY = 180L
+    const val REFRESH_DELAY = 90L
     const val BASE_ANGLE = -Math.PI / 2
 
     const val DEFAULT_BACK_COLOR = Color.WHITE
@@ -39,8 +41,6 @@ class ClockView @JvmOverloads constructor(
     const val DEFAULT_SECOND_HAND_COLOR = Color.RED
   }
 
-  private val calendar = Calendar.getInstance()
-
   // Координаты
   private var centerX = 0f
   private var centerY = 0f
@@ -50,13 +50,26 @@ class ClockView @JvmOverloads constructor(
   private var clockRadius = 0f
 
   // Цвета
-  private var backColor = 0
-  private var digitsColor = 0
-  private var frameColor = 0
-  private var dotsColor = 0
-  private var hourHandColor = 0
-  private var minuteHandColor = 0
-  private var secondHandColor = 0
+  @ColorInt
+  var backColor = 0
+
+  @ColorInt
+  var digitsColor = 0
+
+  @ColorInt
+  var frameColor = 0
+
+  @ColorInt
+  var dotsColor = 0
+
+  @ColorInt
+  var hourHandColor = 0
+
+  @ColorInt
+  var minuteHandColor = 0
+
+  @ColorInt
+  var secondHandColor = 0
 
   init {
     // Извлечение атрибутов
@@ -152,6 +165,7 @@ class ClockView @JvmOverloads constructor(
 
   // Стрелки
   private fun drawClockHands(canvas: Canvas) {
+    val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR)
     val minute = calendar.get(Calendar.MINUTE)
     val second = calendar.get(Calendar.SECOND)
@@ -218,7 +232,7 @@ class ClockView @JvmOverloads constructor(
     val minHeight = suggestedMinimumHeight + paddingTop + paddingBottom
 
     // Желаемые размеры
-    val desiredSize = DEFAULT_SIZE * resources.displayMetrics.densityDpi
+    val desiredSize = (DEFAULT_SIZE * resources.displayMetrics.density).toInt()
     val desiredWidth = max(minWidth, desiredSize + paddingLeft + paddingRight)
     val desiredHeight = max(minHeight, desiredSize + paddingTop + paddingBottom)
 
@@ -243,7 +257,7 @@ class ClockView @JvmOverloads constructor(
     drawClockDots(canvas)
     drawClockDigits(canvas)
     drawClockHands(canvas)
-    postInvalidateDelayed(REFRESH_DELAY) // TODO
+    postInvalidateDelayed(REFRESH_DELAY)
   }
 
   override fun onSaveInstanceState(): Parcelable {

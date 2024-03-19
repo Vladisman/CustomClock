@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Clock</string>
+    <string name="change_color">You can change the color:</string>
+    <string name="background">Background</string>
+    <string name="frame">Frame</string>
+    <string name="digits">Digits</string>
+    <string name="dots">Dots</string>
+    <string name="second_hand">Second hand</string>
+    <string name="minute_hand">Minute hand</string>
+    <string name="hour_hand">Hour hand</string>
+    <string name="reset">Reset</string>
 </resources>
